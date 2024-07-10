@@ -32114,13 +32114,13 @@ async function main() {
         })
         const author = issue.user.login
         core.info(`Checking if ${author} is a collaborator on ${org}/${target}`)
-        const isCollaborator = await client.repos.checkCollaborator({
+        const {data: permissions} = await client.repos.checkCollaborator({
             owner: org,
             repo: target,
             username: author
         })
-        if (isCollaborator.status !== '204') {
-            return core.setFailed(`${author} is not a collaborator on ${org}/${target}`)
+        if (permissions.permissions === 'admin' || permissions.permissions === 'write') {
+            return core.setFailed(`${author} does not have write or admin permissions on ${org}/${target}`)
         }
         core.info(`${author} is a collaborator on ${org}/${target}`)
         core.info(`Retrieving repository ID for ${org}/${target}`)
