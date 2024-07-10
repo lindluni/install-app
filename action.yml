@@ -1,0 +1,26 @@
+name: 'Install GitHub App'
+author: 'Brett Logan'
+description: 'Automates the installation of a GitHub App on a repository'
+inputs:
+  app_id:
+    description: 'The ID of the GitHub App'
+    required: true
+  issue_number:
+    description: 'The issue number of the installation request'
+    required: true
+  org:
+    description: 'The organization of the repository'
+    required: true
+  repo:
+    description: 'The repository containing the issue with the installation request'
+    required: true
+  target_repo:
+    description: 'The repository to install the GitHub App on'
+    required: true
+  token:
+    description: 'The GitHub token to use for authentication'
+    required: true
+    default: ${{ github.token }}
+runs:
+  using: node20
+  main: dist/index.js
