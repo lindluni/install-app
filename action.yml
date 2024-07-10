@@ -20,7 +20,9 @@ inputs:
   token:
     description: 'The GitHub token to use for authentication'
     required: true
-    default: ${{ github.token }}
+  unique_id:
+    description: 'A unique ID (GUID) to identify the workflow run'
+    required: true
 runs:
   using: node20
   main: dist/index.js
