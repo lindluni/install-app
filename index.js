@@ -38,12 +38,12 @@ async function main() {
         })
         const author = issue.user.login
         core.info(`Checking if ${author} is a collaborator on ${org}/${target}`)
-        const {data: permissions} = await client.repos.checkCollaborator({
+        const {data: permissions} = await client.request('GET /repos/{owner}/{repo}/collaborators/{username}/permission', {
             owner: org,
             repo: target,
             username: author
         })
-        if (permissions.permissions === 'admin' || permissions.permissions === 'write') {
+        if (permissions.permission !== 'admin' && permissions.permission !== 'write') {
             return core.setFailed(`${author} does not have write or admin permissions on ${org}/${target}`)
         }
         core.info(`${author} is a collaborator on ${org}/${target}`)
@@ -74,7 +74,7 @@ async function main() {
             owner: org,
             repo: repo,
             issue_number: issueNumber,
-            body: `Successfully installed app ${appID} on ${org}/${target}`
+            body: `Successfully installed app \`${appID}\` on \`${org}/${target}\``
         })
     } catch (e) {
         return core.setFailed(`Failed to comment on issue ${issueNumber}`)
